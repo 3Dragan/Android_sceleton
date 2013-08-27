@@ -6,4 +6,5 @@ Collect together AndroidAnnotations 3.0 , ActionBarSherlock other good stuff (OR
 There a little mess with project but I`m working on it.
 
 1) Gradle wants local.preporties so dont forget put your sdk.dir
-2) If it woun`t build with Android studio try to build from command line.
+2) If it woun`t build with Android studio try to build from command line
+3) Dont forget mark apt_generated as source root (for generated AndroidAnnotations code)
