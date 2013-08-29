@@ -17,6 +17,7 @@ repositories {
 ext.daggerVersion = '1.1.0';
 ext.androidAnnotationsVersion = '2.7.1';
 ext.ormliteVersion = '4.46';
+ext.aptOutput = file("${project.buildDir}/source/apt_generated")
 
 configurations {
 
@@ -44,13 +45,6 @@ android {
 }
 
 android.applicationVariants.all { variant ->
-    def aptOutput = file("${project.buildDir}/source/apt_generated/${variant.dirName}")
-    println "****************************"
-    println "variant: ${variant.name}"
-    println "manifest:  ${variant.processResources.manifestFile}"
-    println "aptOutput:  ${aptOutput}"
-    println "****************************"
-    aptOutput.mkdirs()
     variant.javaCompile.classpath += configurations.androidannotations
     variant.javaCompile.options.compilerArgs += [
             '-processor', 'com.googlecode.androidannotations.AndroidAnnotationProcessor',
@@ -59,3 +53,13 @@ android.applicationVariants.all { variant ->
     ]
 }
 
+task generateSources {
+    doFirst {
+        println "create folder for androidannotations:  ${aptOutput}"
+        aptOutput.mkdirs()
+    }
+}
+
+gradle.projectsEvaluated {
+    compileDebug.dependsOn(generateSources)
+}
